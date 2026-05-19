@@ -4,7 +4,7 @@ public class Componets
 {
     public char Code { get; set; }
     public string Name { get; set; }
-    public string Desciption { get; set; }
+    public string Description { get; set; }
     public int ComponentManufactorId { get; set; }
     public int ComponentTypeId { get; set; }
     

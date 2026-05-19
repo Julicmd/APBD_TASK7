@@ -6,6 +6,6 @@ public class PCComponets
     public char ComponetCode { get; set; }
     public int ComponetAmount { get; set; }
    
-    
+    public Componets Component { get; set; }
     
 }

@@ -4,6 +4,7 @@ using APBDTask9.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APBDTask9.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260519143645_FixCompoundKey")]
+    partial class FixCompoundKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,29 +47,6 @@ namespace APBDTask9.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ComponentManufactures");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Abbreviation = "INTL",
-                            FoundationDate = new DateTime(1968, 7, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FullName = "Intel Corporation"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Abbreviation = "AMD",
-                            FoundationDate = new DateTime(1969, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FullName = "Advanced Micro Devices"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Abbreviation = "NVDA",
-                            FoundationDate = new DateTime(1993, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FullName = "Nvidia Corporation"
-                        });
                 });
 
             modelBuilder.Entity("APBDTask9.Models.ComponentType", b =>
@@ -88,26 +68,6 @@ namespace APBDTask9.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ComponentTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Abbreviation = "CPU",
-                            Name = "Central Processing Unit"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Abbreviation = "GPU",
-                            Name = "Graphics Processing Unit"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Abbreviation = "RAM",
-                            Name = "Random Access Memory"
-                        });
                 });
 
             modelBuilder.Entity("APBDTask9.Models.Componets", b =>
@@ -137,32 +97,6 @@ namespace APBDTask9.Migrations
                     b.HasIndex("ComponentTypeId");
 
                     b.ToTable("Componets");
-
-                    b.HasData(
-                        new
-                        {
-                            Code = "A",
-                            ComponentManufactorId = 1,
-                            ComponentTypeId = 1,
-                            Desciption = "High end CPU",
-                            Name = "Intel Core i9"
-                        },
-                        new
-                        {
-                            Code = "B",
-                            ComponentManufactorId = 2,
-                            ComponentTypeId = 2,
-                            Desciption = "High end GPU",
-                            Name = "AMD Radeon RX"
-                        },
-                        new
-                        {
-                            Code = "C",
-                            ComponentManufactorId = 3,
-                            ComponentTypeId = 2,
-                            Desciption = "Top tier GPU",
-                            Name = "Nvidia RTX 4090"
-                        });
                 });
 
             modelBuilder.Entity("APBDTask9.Models.PCComponets", b =>
@@ -181,26 +115,6 @@ namespace APBDTask9.Migrations
                     b.HasIndex("ComponetCode");
 
                     b.ToTable("PCComponets");
-
-                    b.HasData(
-                        new
-                        {
-                            PCId = 1,
-                            ComponetCode = "A",
-                            ComponetAmount = 1
-                        },
-                        new
-                        {
-                            PCId = 1,
-                            ComponetCode = "B",
-                            ComponetAmount = 2
-                        },
-                        new
-                        {
-                            PCId = 2,
-                            ComponetCode = "C",
-                            ComponetAmount = 1
-                        });
                 });
 
             modelBuilder.Entity("APBDTask9.Models.PCs", b =>
@@ -230,35 +144,6 @@ namespace APBDTask9.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PCs");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(2026, 5, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Gaming Beast X",
-                            Stock = 5,
-                            Warranty = 36,
-                            Weight = 12.5f
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(2026, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Office Mini Pro",
-                            Stock = 12,
-                            Warranty = 24,
-                            Weight = 4.2f
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(2026, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Workstation Pro",
-                            Stock = 3,
-                            Warranty = 48,
-                            Weight = 8f
-                        });
                 });
 
             modelBuilder.Entity("APBDTask9.Models.Componets", b =>
