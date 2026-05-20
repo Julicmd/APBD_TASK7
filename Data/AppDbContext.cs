@@ -11,8 +11,8 @@ public class AppDbContext : DbContext
     }
     
     public DbSet<PCs> PCs { get; set; }
-    public DbSet<PCComponets> PCComponets { get; set; }
-    public DbSet<Componets> Componets { get; set; }
+    public DbSet<PcComponets> PcComponents { get; set; }
+    public DbSet<Components> Components { get; set; }
     public DbSet<ComponentType> ComponentTypes { get; set; }
     public DbSet<ComponentManufacture> ComponentManufactures { get; set; }
 
@@ -20,21 +20,28 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         //ids
-        modelBuilder.Entity<PCComponets>().HasKey(pc => new { pc.PCId , pc.ComponetCode });
-        modelBuilder.Entity<Componets>().HasKey(c => new {c.Code});
+        modelBuilder.Entity<PcComponets>().HasKey(pc => new {pc.PcId, pc.ComponentCode});
+        modelBuilder.Entity<Components>().HasKey(c => new {c.Code});
 
         //connections
-       modelBuilder.Entity<PCs>().HasMany(pc => pc.PcComponets)
-           .WithOne().HasForeignKey(pc => pc.PCId);
-
-       modelBuilder.Entity<Componets>().HasMany(c => c.PcComponets)
-           .WithOne().HasForeignKey(c => c.ComponetCode);
-
        modelBuilder.Entity<ComponentManufacture>().HasMany(cm => cm.Components)
            .WithOne().HasForeignKey(cm => cm.ComponentManufactorId);
        
        modelBuilder.Entity<ComponentType>().HasMany(ct => ct.Components)
            .WithOne().HasForeignKey(ct => ct.ComponentTypeId);
+       
+       //many to many 
+       modelBuilder.Entity<PcComponets>()
+           .HasOne(x => x.Pc)
+           .WithMany(p => p.PcComponets)
+           .HasForeignKey(x => x.PcId);
+       
+       modelBuilder.Entity<PcComponets>()
+           .HasOne(x => x.Component)
+           .WithMany(c => c.PcComponets)
+           .HasForeignKey(x => x.ComponentCode);
+       
+       
        
        //Data
        modelBuilder.Entity<PCs>().HasData(
@@ -54,16 +61,16 @@ public class AppDbContext : DbContext
                Stock = 3
            });
        
-       modelBuilder.Entity<PCComponets>().HasData(
-           new PCComponets { PCId = 1, ComponetCode = 'A', ComponetAmount = 1 },
-           new PCComponets { PCId = 1, ComponetCode = 'B', ComponetAmount = 2 },
-           new PCComponets { PCId = 2, ComponetCode = 'C', ComponetAmount = 1 }
+       modelBuilder.Entity<PcComponets>().HasData(
+           new PcComponets { PcId = 1, ComponentCode = 'A', ComponetAmount = 1 },
+           new PcComponets { PcId = 1, ComponentCode = 'B', ComponetAmount = 2 },
+           new PcComponets { PcId = 2, ComponentCode = 'C', ComponetAmount = 1 }
        );
        
-       modelBuilder.Entity<Componets>().HasData(
-           new Componets { Code = 'A', Name = "Intel Core i9", Description = "High end CPU", ComponentManufactorId = 1, ComponentTypeId = 1 },
-           new Componets { Code = 'B', Name = "AMD Radeon RX", Description = "High end GPU", ComponentManufactorId = 2, ComponentTypeId = 2 },
-           new Componets { Code = 'C', Name = "Nvidia RTX 4090", Description = "Top tier GPU", ComponentManufactorId = 3, ComponentTypeId = 2 }
+       modelBuilder.Entity<Components>().HasData(
+           new Components { Code = 'A', Name = "Intel Core i9", Description = "High end CPU", ComponentManufactorId = 1, ComponentTypeId = 1 },
+           new Components { Code = 'B', Name = "AMD Radeon RX", Description = "High end GPU", ComponentManufactorId = 2, ComponentTypeId = 2 },
+           new Components { Code = 'C', Name = "Nvidia RTX 4090", Description = "Top tier GPU", ComponentManufactorId = 3, ComponentTypeId = 2 }
        );
        
        modelBuilder.Entity<ComponentManufacture>().HasData(

@@ -1,11 +1,12 @@
 namespace APBDTask9.Models;
 
-public class PCComponets
+public class PcComponets
 {
-    public int PCId { get; set; }
-    public char ComponetCode { get; set; }
+    public int PcId { get; set; }
+    public char ComponentCode { get; set; }
     public int ComponetAmount { get; set; }
    
-    public Componets Component { get; set; }
+    public PCs Pc { get; set; }
+    public Components Component { get; set; }
     
 }

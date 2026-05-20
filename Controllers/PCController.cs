@@ -1,5 +1,6 @@
 using APBDTask9.Data;
 using APBDTask9.DTOs;
+using APBDTask9.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,7 +37,7 @@ public class PcController: ControllerBase
         return Ok(response);
     }
 
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:int}/components")]
     public async Task<IActionResult> GetPcCompopnentsById(int id)
     {
         var pc = await _dbContext.PCs.Include(pc => pc.PcComponets).ThenInclude(pcComponets => pcComponets.Component)
@@ -58,7 +59,38 @@ public class PcController: ControllerBase
         
         return Ok(response);
     }
-    
-    
+
+    [HttpPost]
+    public async Task<IActionResult> AddPc([FromBody] AddPcRequest request)
+    {
+        if (string.IsNullOrEmpty(request.Name))
+            return BadRequest("Name is required");
+        
+        var pc = new PCs
+        {
+            Name = request.Name,
+            Weight = request.Weight,
+            Warranty = request.Warranty,
+            CreatedAt = request.CreatedAt,
+            Stock = request.Stock,
+        };
+        
+        await _dbContext.AddAsync(pc);
+        await _dbContext.SaveChangesAsync();
+
+
+        var response = new PcGetAllResponse
+        {
+            Id = pc.Id,
+            Name = pc.Name,
+            Weight = pc.Weight,
+            Warranty = pc.Warranty,
+            CreatedAt = pc.CreatedAt,
+            Stock = pc.Stock,
+        };
+        
+        return CreatedAtAction(nameof(GetPcCompopnentsById), new { id = pc.Id },response);
+
+    }
     
 }

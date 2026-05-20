@@ -7,5 +7,5 @@ public class ComponentType
     public string Name { get; set; }
     
     
-    public IEnumerable<Componets> Components { get; set; }
+    public ICollection<Components> Components { get; set; }
 }

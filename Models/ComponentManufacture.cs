@@ -7,5 +7,5 @@ public class ComponentManufacture
     public string FullName { get; set; }
     public DateTime FoundationDate { get; set; }
     
-    public IEnumerable<Componets> Components { get; set; }
+    public ICollection<Components> Components { get; set; }
 }

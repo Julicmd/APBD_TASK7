@@ -1,6 +1,6 @@
 namespace APBDTask9.Models;
 
-public class Componets
+public class Components
 {
     public char Code { get; set; }
     public string Name { get; set; }
@@ -9,6 +9,6 @@ public class Componets
     public int ComponentTypeId { get; set; }
     
     
-    public IEnumerable<PCComponets> PcComponets { get; set; } = [];
+    public ICollection<PcComponets> PcComponets { get; set; } = [];
     
 }
