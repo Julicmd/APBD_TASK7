@@ -42,9 +42,9 @@ public class PcController: ControllerBase
     {
         var pc = await _dbContext.PCs.Include(pc => pc.PcComponets).ThenInclude(pcComponets => pcComponets.Component)
             .FirstOrDefaultAsync(pc=>pc.Id == id);
-        
-        if(pc == null)
-            return  NotFound();
+
+        if (pc == null)
+            return NotFound();
 
         var response = pc.PcComponets.Select(pcc =>
             new PcGetComponentsResponse
@@ -92,5 +92,46 @@ public class PcController: ControllerBase
         return CreatedAtAction(nameof(GetPcCompopnentsById), new { id = pc.Id },response);
 
     }
+    
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeletePc(int id)
+    {
+        var pc = await _dbContext.PCs.FirstOrDefaultAsync(p => p.Id == id);
+
+        if (pc == null)
+            return NotFound();
+
+        _dbContext.PCs.Remove(pc);
+        await _dbContext.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdatePc([FromBody] UpdatePcRequest request,int id)
+    {
+        var pc = await _dbContext.PCs.FirstOrDefaultAsync(p => p.Id == id);
+        
+        if(pc == null)
+            return NotFound();
+        
+        pc.Name = request.Name;
+        pc.Weight = request.Weight;
+        pc.Warranty = request.Warranty;
+        pc.CreatedAt = request.CreatedAt;
+        pc.Stock = request.Stock;
+
+        _dbContext.Update(pc);
+        await _dbContext.SaveChangesAsync();
+
+        return Ok();
+    }
+    
+    
+    
+    
+    
+    
+    
     
 }
